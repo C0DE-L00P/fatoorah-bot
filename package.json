@@ -15,7 +15,7 @@
     "pm2": "^5.4.2",
     "qr-image": "^3.2.0",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.26.0"
+    "whatsapp-web.js": "^1.27.0"
   },
   "keywords": [],
   "author": "Mohamed Gamal Yaseen <mohamedgyaseen@gmail.com> (https://github.com/C0DE-L00P)",
