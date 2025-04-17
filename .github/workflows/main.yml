@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: git pull latest changes
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }}/Server && git pull && npm install"
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }}/Server && git pull && source ~/.nvm/nvm.sh && npm install"
 
   update_bot:
     needs: git_pull
@@ -31,4 +31,4 @@ jobs:
     steps:
       - name: Check PM2 Status
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "npm restart &&npx pm2 ls"
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "source ~/.nvm/nvm.sh && npm restart && npx pm2 ls"
