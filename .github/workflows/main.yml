@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  Stablish Connection:
+  stablish_connection:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,16 +17,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass
 
-  Git Pull:
-    needs: Stablish Connection
+  git_pull:
+    needs: stablish_connection
     runs-on: ubuntu-latest
     steps:
       - name: git pull latest changes
         run: |
           sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }}/Server && git pull && npm install"
 
-  Update Bot:
-    needs: Git Pull
+  update_bot:
+    needs: git_pull
     runs-on: ubuntu-latest
     steps:
       - name: Check PM2 Status
