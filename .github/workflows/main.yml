@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  check-pm2:
+  Stablish Connection:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,10 +17,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass
 
-      - name: Fetch updates and restart bot
+  Git Pull:
+    needs: Stablish Connection
+    runs-on: ubuntu-latest
+    steps:
+      - name: git pull latest changes
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }}/Server && git pull && npm install && npm restart"
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/${{ secrets.SSH_USER }}/Server && git pull && npm install"
 
+  Update Bot:
+    needs: Git Pull
+    runs-on: ubuntu-latest
+    steps:
       - name: Check PM2 Status
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "npx pm2 ls"
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "npm restart &&npx pm2 ls"
