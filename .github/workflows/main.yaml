@@ -17,7 +17,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y sshpass
 
-      - name: Check PM2 Status
+      - name: Fetch updates and restart bot
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "pm2 ls" &&
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/nassay/Server && git pull && npm install && pm2 restart 0"
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/nassay/Server && git pull && npm install && npm restart && npx pm2 ls"
