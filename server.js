@@ -1,10 +1,10 @@
-const express = require('express');
-const config = require('./config');
-const logger = require('./logger');
-const stateManager = require('./stateManager');
-const taskScheduler = require('./taskScheduler');
-const whatsappClient = require('./whatsappClient');
-const routes = require('./routes');
+const express = require("express");
+const config = require("./src/config");
+const logger = require("./src/logger");
+const stateManager = require("./src/stateManager");
+const taskScheduler = require("./src/taskScheduler");
+const whatsappClient = require("./src/whatsappClient");
+const routes = require("./src/routes");
 
 const app = express();
 
@@ -14,7 +14,28 @@ app.use(express.json());
 // Routes
 app.use(config.route, routes);
 
-// Initialize application
+initializeApp();
+const server = startServer();
+
+// Handle Shutdown
+process.on("SIGTERM", () => {
+  logger.log("Received SIGTERM, shutting down gracefully");
+  server.close(() => {
+    logger.log("Server closed");
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  logger.log("Received SIGINT, shutting down gracefully");
+  server.close(() => {
+    logger.log("Server closed");
+    process.exit(0);
+  });
+});
+
+module.exports = app;
+
 function initializeApp() {
   // Load previous state
   stateManager.loadState((token, id) => {
@@ -35,7 +56,6 @@ function initializeApp() {
   }
 }
 
-// Start server
 function startServer() {
   const server = app.listen(config.port, () => {
     logger.log(`WhatsApp Bot Server listening on port ${config.port}`);
@@ -43,29 +63,6 @@ function startServer() {
   });
 
   server.setTimeout(config.serverTimeout);
-  
+
   return server;
 }
-
-// Initialize and start
-initializeApp();
-const server = startServer();
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.log('Received SIGTERM, shutting down gracefully');
-  server.close(() => {
-    logger.log('Server closed');
-    process.exit(0);
-  });
-});
-
-process.on('SIGINT', () => {
-  logger.log('Received SIGINT, shutting down gracefully');
-  server.close(() => {
-    logger.log('Server closed');
-    process.exit(0);
-  });
-});
-
-module.exports = app;

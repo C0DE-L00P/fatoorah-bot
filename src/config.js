@@ -4,7 +4,7 @@ module.exports = {
   port: 3000,
   route: '/bot2',
   connectionTimeout: 120000,
-  stateFile: path.join(__dirname, 'data2.json'),
+  stateFile: path.join(__dirname, '../temp/retries.json'),
   maxClients: 5,
   clientStartDelay: 5000,
   cronInterval: 1000,

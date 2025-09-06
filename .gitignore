@@ -1,3 +1,4 @@
 node_modules*
 .wwebjs*
 bun.lockb
+draft*
