@@ -5,7 +5,7 @@ module.exports = {
   apps: [{
     name: PM2_NAME,
     port: PM2_PORT,
-    script: "./inviter_bot.js",
+    script: "./server.js",
     watch: false
   }]
 };
