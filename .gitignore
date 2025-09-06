@@ -2,3 +2,4 @@ node_modules*
 .wwebjs*
 bun.lockb
 draft*
+libssl1.1_1.1.1*
